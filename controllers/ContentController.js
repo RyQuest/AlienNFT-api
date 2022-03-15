@@ -1,8 +1,123 @@
 const path = require("path");
+const multer = require("multer");
+const { Registration } = require("../models/userModel");
 const contentServices = require("../services/contentServices");
 // const sendResponse = require('../helper/responseSender');
 require("dotenv").config();
+const ASSET_URL = process.env.ASSET_URL;
 
+var Storage = multer.diskStorage({
+  destination: "./public/content",
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+var upload = multer({
+  storage: Storage,
+}).single("file");
+
+const addContent = async function (req, res) {
+  console.log("postmethod add content");
+  try {
+    let user = await Registration.findOne({ email: req.body.email });
+
+    // validations
+    if (user == null || user == undefined || user == "") {
+      // return sendResponse(res, 400, { status: false, message: "Invalid user" });
+      res.send({ message: "Invalid user" });
+    }
+
+    if (
+      req.body.title == "" ||
+      req.body.price == "" ||
+      req.body.category == "" ||
+      req.body.description == "" ||
+      req.body.metadata == "" ||
+      req.body.wallet_address == ""
+    ) {
+      // return sendResponse(res, 400, { status: false, message: "Please fill all details!" });
+      res.send({ message: "Please fill all details!" });
+    }
+
+    let content = await contentServices.addContent(req, res);
+    console.log("content", content);
+    if (content) {
+      // return sendResponse(res, 200, { status: true, data : content, message: "Content Added successfully" });
+      res.send({ data: content, message: "Content Added successfully" });
+    } else {
+      // return sendResponse(res, 400, { status: false, message: "Adding content failed!" });
+      res.send({ message: "Adding content failed!" });
+    }
+  } catch (error) {
+    // return sendResponse(res, 500, { status: false, message: "Something went wrong" });
+    res.send({ message: "Something went wrong" });
+  }
+};
+
+const editContent = async function (req, res) {
+  console.log("postmethod add content");
+  try {
+    let content = await contentServices.getContent(req.body._id);
+
+    // validations
+    if (content == null || content == undefined || content == "") {
+      // return sendResponse(res, 400, { status: false, message: "Invalid content" });
+      res.send({ message: "Invalid content" });
+    }
+
+    let filename = "";
+    if (req.file) {
+      console.log("wit image");
+      filename = req.file.filename;
+    } else {
+      console.log("without image");
+      filename = content.image;
+    }
+    let update = await contentServices.updateContent(filename, req.body);
+    console.log("update", update);
+    if (update) {
+      content = await contentServices.getContent(req.body._id);
+      // return sendResponse(res, 200, { status: true, data : content, message: "Content updated successfully" });
+      res.send({ data: content, message: "Content updated successfully" });
+    } else {
+      // return sendResponse(res, 400, { status: false, message: "Content updation failed" });
+      res.send({ message: "Content updation failed" });
+    }
+  } catch (error) {
+    // return sendResponse(res, 500, { status: false, message: "Something went wrong" });
+    res.send({ message: "Something went wrong" });
+  }
+};
+
+const deleteContent = async function (req, res) {
+  console.log("postmethod delete content");
+
+  try {
+    let content = await contentServices.getContent(req.body._id);
+
+    // validations
+    if (content == null || content == undefined || content == "") {
+      // return sendResponse(res, 400, { status: false, message: "Invalid content" });
+      res.send({ message: "Invalid content" });
+    }
+
+    let del = await contentServices.deleteContent(req.body._id);
+    if (del) {
+      // return sendResponse(res, 200, { status: true, data : del, message: "Content deleted successfully" });
+      res.send({ data: del, message: "Content deleted successfully" });
+    } else {
+      // return sendResponse(res, 400, { status: false, message: "Content deletion failed" });
+      res.send({ message: "Content deletion failed" });
+    }
+  } catch (error) {
+    // return sendResponse(res, 500, { status: false, message: "Something went wrong" });
+    res.send({ message: "Something went wrong" });
+  }
+};
 const content = async function (req, res) {
   try {
     console.log("postmethod all content");
@@ -163,6 +278,9 @@ const categoryNft = async (req, res) => {
 
 module.exports = {
   content,
+  addContent,
+  editContent,
+  deleteContent,
   contentdetail,
   searchApi,
   // LimitedCollectionApi,
