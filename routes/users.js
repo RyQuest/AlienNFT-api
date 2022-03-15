@@ -37,6 +37,8 @@ router.post("/search", contentController.searchApi);
 
 router.get("/categories-nft", contentController.categoryNft);
 
+router.get("/get-data-Open", contentController.getDataFromOpen);
+
 router.post("/content-detail", contentController.contentdetail);
 
 router.post("/welcome", auth, (req, res) => {

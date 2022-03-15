@@ -1,4 +1,5 @@
 const { contentInfo } = require('../models/Content')
+const { OpenSeacontentInfo } = require('../models/openSeaContent')
 const sendResponse = require('../helper/responseSender');
 
 const getContent = async function (id) {
@@ -161,10 +162,23 @@ const findContentbyId=async(content_id)=>{
 } 
 }
 
+const openSeadataSave = async function (obj) {
+    const content = new OpenSeacontentInfo(obj);
+    await content.save();
+    return content;
+}
+
+const getOpenSeaContent = async function (obj) {
+  const content = await OpenSeacontentInfo.findOne({token_id : obj})
+  return content;
+}
+
 module.exports = {
     getContent,
     getAllContent,
     search,
     LimitedCollection,
-    findContentbyId
+    findContentbyId,
+    openSeadataSave,
+    getOpenSeaContent
 }
