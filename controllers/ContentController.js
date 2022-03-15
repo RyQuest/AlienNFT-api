@@ -280,7 +280,7 @@ const categoryNft = async (req, res) => {
 const getDataFromOpen = async (req, res) => {
 
   let order_direction = "desc";
-  let offset = 240;
+  let offset = req.body.offset;
   let limit= 50;
 
   let api_url='https://testnets-api.opensea.io/api/v1/assets?owner='+ "0x6abeda041e15Ac5365465cF03B502F9E0048C283"+'&order_direction='+ order_direction +'&offset='+ offset +'&limit=' + limit;
