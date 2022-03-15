@@ -320,6 +320,11 @@ const getDataFromOpen = async (req, res) => {
   res.send('done')
 };
 
+const getTraitFilter = async (req, res) => {
+    let opencontent = await contentServices.getTraitFilters();
+    res.send(opencontent)
+};
+
 module.exports = {
   content,
   addContent,
@@ -329,5 +334,6 @@ module.exports = {
   searchApi,
   // LimitedCollectionApi,
   categoryNft,
-  getDataFromOpen
+  getDataFromOpen,
+  getTraitFilter
 };

@@ -10,6 +10,7 @@ const getContent = async function (id) {
     return null;
   }
 };
+
 const getAllContent = async function (query, page, limit, sort) {
   console.log("queryyyyyyyyyyyyy", query);
   console.log("sort", sort);
@@ -43,7 +44,7 @@ const getAllContent = async function (query, page, limit, sort) {
 
       search_data = {
         $and: [
-          { $or: [{ title: regex }, { price: regex }, { category: regex }] },
+          { $or: [{ name: regex }, { attributes: regex }, { description: regex }] },
         ],
       };
 
@@ -169,6 +170,93 @@ const getOpenSeaContent = async function (obj) {
   return content;
 };
 
+const getTraitFilters = async function (req, res) {
+  let traits = []
+  let traits1 = []
+  let traits2 = []
+  let traits3 = []
+
+  let data = await OpenSeacontentInfo.find()
+  // hats
+  data.forEach( async(element,index)=>{
+        for (let index = 0; index < 3; index++) {
+          if(element.attributes[index].trait_type == "hats"){
+            // console.log("hats", element.attributes[index].value);
+            let value = element.attributes[index].value
+            value = value.toString()
+            console.log("hats", value);
+
+            traits.push(value)
+          }
+         
+        }   
+  });
+
+  // character
+  data.forEach( async(element,index)=>{
+    for (let index = 0; index < 3; index++) {
+      if(element.attributes[index].trait_type == "character"){
+        // console.log("hats", element.attributes[index].value);
+        let value = element.attributes[index].value
+        value = value.toString()
+        // console.log("character", value);
+
+        traits1.push(value)
+      }
+     
+    }   
+});
+
+// shrits
+data.forEach( async(element,index)=>{
+  for (let index = 0; index < 3; index++) {
+    if(element.attributes[index].trait_type == "shirts"){
+      // console.log("hats", element.attributes[index].value);
+      let value = element.attributes[index].value
+      value = value.toString()
+      // console.log("shirts", value);
+
+      traits2.push(value)
+    }
+   
+  }   
+});
+
+// glasses
+data.forEach( async(element,index)=>{
+  for (let index = 0; index < 3; index++) {
+    if(element.attributes[index].trait_type == "glasses"){
+      // console.log("hats", element.attributes[index].value);
+      let value = element.attributes[index].value
+      value = value.toString()
+      // console.log("glasses", value);
+
+      traits3.push(value)
+    }
+   
+  }   
+});
+
+
+  let hats = [...new Set(traits)];
+  let character = [...new Set(traits1)];
+  let shirts = [...new Set(traits2)];
+  let glasses = [...new Set(traits3)];
+
+  console.log("hats", hats);
+  console.log("character", character);
+  console.log("shirts", shirts);
+  console.log("glasses", glasses);
+
+  let obj = {
+    hats,
+    character,
+    shirts,
+    glasses
+  }
+ return obj
+};
+
 module.exports = {
   getContent,
   getAllContent,
@@ -177,4 +265,5 @@ module.exports = {
   findContentbyId,
   openSeadataSave,
   getOpenSeaContent,
+  getTraitFilters
 };
