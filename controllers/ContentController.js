@@ -278,13 +278,14 @@ const categoryNft = async (req, res) => {
 };
 
 const getDataFromOpen = async (req, res) => {
-  let api_url='https://testnets-api.opensea.io/api/v1/assets?owner='+ "0x6abeda041e15Ac5365465cF03B502F9E0048C283"+'&order_direction=desc&offset=0&limit=20'
 
-  let payload={owner:"0x6abeda041e15Ac5365465cF03B502F9E0048C283",
-               order_direction:"desc",
-               offset:0,
-               limit:50}
-  let nftData=await axios.get(api_url,payload);
+  let order_direction = "desc";
+  let offset = 240;
+  let limit= 50;
+
+  let api_url='https://testnets-api.opensea.io/api/v1/assets?owner='+ "0x6abeda041e15Ac5365465cF03B502F9E0048C283"+'&order_direction='+ order_direction +'&offset='+ offset +'&limit=' + limit;
+
+  let nftData=await axios.get(api_url);
 
 
       nftData.data.assets.forEach( async(element,index)=>{
