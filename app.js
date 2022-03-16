@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var openSeaRouter = require("./routes/opensea");
 const mongoose = require("mongoose");
 var cors = require("cors");
 
@@ -36,6 +37,9 @@ app.use(function (req, res, next) {
 app.use("/", indexRouter);
 
 app.use("/users", usersRouter);
+
+app.use("/openSea", openSeaRouter);
+
 
 app.use(express.static(path.join(__dirname, "/public")));
 
