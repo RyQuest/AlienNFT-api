@@ -259,12 +259,12 @@ data.forEach( async(element,index)=>{
 
 const addContent = async function (req, res) {
   let obj = {
-    permalink : "",
+    permalink : "https://testnets.opensea.io/assets/0x16f095cd018c9dbc671c1c96addc5ff4f5aa7f93/"+req.body.token_id,
     name : req.body.name,
     description : req.body.description,
-    image_url : req.body.image_url,
-    image_url_thumbnail : req.body.image_url_thumbnail,
-    image_url_preview : req.body.image_url_preview,
+    image_url : "https://gateway.ipfs.io/ipfs/"+req.body.image_url,
+    image_url_thumbnail : "https://gateway.ipfs.io/ipfs/"+req.body.image_url_thumbnail,
+    image_url_preview : "https://gateway.ipfs.io/ipfs/"+req.body.image_url_preview,
     token_id : req.body.token_id,
     status : "approved",
     date : new Date()
