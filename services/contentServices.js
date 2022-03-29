@@ -257,6 +257,24 @@ data.forEach( async(element,index)=>{
  return obj
 };
 
+const addContent = async function (req, res) {
+  let obj = {
+    permalink : "",
+    name : req.body.name,
+    description : req.body.description,
+    image_url : req.body.image_url,
+    image_url_thumbnail : req.body.image_url_thumbnail,
+    image_url_preview : req.body.image_url_preview,
+    token_id : req.body.token_id,
+    status : "approved",
+    date : new Date()
+  }
+
+  const content = new OpenSeacontentInfo(obj);
+    await content.save();
+    return content;
+};
+
 module.exports = {
   getContent,
   getAllContent,
@@ -265,5 +283,6 @@ module.exports = {
   findContentbyId,
   openSeadataSave,
   getOpenSeaContent,
-  getTraitFilters
+  getTraitFilters,
+  addContent
 };

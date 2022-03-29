@@ -24,25 +24,6 @@ var upload = multer({
 const addContent = async function (req, res) {
   console.log("postmethod add content");
   try {
-    let user = await Registration.findOne({ email: req.body.email });
-
-    // validations
-    if (user == null || user == undefined || user == "") {
-      // return sendResponse(res, 400, { status: false, message: "Invalid user" });
-      res.send({ message: "Invalid user" });
-    }
-
-    if (
-      req.body.title == "" ||
-      req.body.price == "" ||
-      req.body.category == "" ||
-      req.body.description == "" ||
-      req.body.metadata == "" ||
-      req.body.wallet_address == ""
-    ) {
-      // return sendResponse(res, 400, { status: false, message: "Please fill all details!" });
-      res.send({ message: "Please fill all details!" });
-    }
 
     let content = await contentServices.addContent(req, res);
     console.log("content", content);

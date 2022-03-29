@@ -43,6 +43,9 @@ router.post("/content-detail", contentController.contentdetail);
 
 router.get("/trait-filter", contentController.getTraitFilter);
 
+router.post("/add-content", contentController.addContent);
+
+
 router.post("/welcome", auth, (req, res) => {
   res.status(200).send("Welcome 🙌 ");
 });
