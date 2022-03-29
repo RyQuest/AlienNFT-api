@@ -23,6 +23,7 @@ var upload = multer({
 
 const addContent = async function (req, res) {
   console.log("postmethod add content");
+  console.log(req.body);
   try {
 
     let content = await contentServices.addContent(req, res);
