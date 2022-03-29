@@ -54,7 +54,7 @@ const getAllContent = async function (query, page, limit, sort) {
         .limit(limit)
         .skip(startIndex)
         .sort({
-          price: 1,
+          id: -1,
         });
       results.content = painting;
       return results;
@@ -98,7 +98,7 @@ const getAllContent = async function (query, page, limit, sort) {
           .limit(limit)
           .skip(startIndex)
           .sort({
-            price: 1,
+            id: -1,
           });
         results.content = painting;
         return results;
